@@ -9,7 +9,7 @@ public partial class GameObject
 	/// <summary>
 	/// Get the first matching component on this game object, optionally recurse when deep is true
 	/// </summary>
-	/// [Pure]
+	[Pure]
 	public BaseComponent GetComponent( Type type, [NodeProperty] bool enabledOnly = true, [NodeProperty] bool deep = false )
 	{
 		return GetComponents( type, enabledOnly, deep ).FirstOrDefault();
