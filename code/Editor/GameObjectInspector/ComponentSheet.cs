@@ -51,7 +51,7 @@ public partial class ComponentSheet : Widget
 		ExpandedCookie = expanded;
 	}
 
-	public ComponentSheet( Guid gameObjectId, SerializedObject target, Action contextMenu ) : base( null )
+	public ComponentSheet( Guid gameObjectId, SerializedObject target, Action<Vector2?> contextMenu ) : base( null )
 	{
 		GameObjectId = gameObjectId;
 		Name = "ComponentSheet";
@@ -83,7 +83,8 @@ public partial class ComponentSheet : Widget
 		}
 	}
 
-	void RebuildContent()
+	[Event.Hotload]
+	public void RebuildContent()
 	{
 		Content.Clear( true );
 
@@ -94,17 +95,84 @@ public partial class ComponentSheet : Widget
 	{
 		if ( !Expanded ) return;
 	
-		var props = TargetObject.Where( x => x.HasAttribute<PropertyAttribute>() );
+		var props = TargetObject.Where( x => x.HasAttribute<PropertyAttribute>() )
+									.OrderBy( x => x.SourceLine )
+									.ThenBy( x => x.DisplayName )
+									.ToArray();
 
 		var ps = new ControlSheet();
+		HashSet<string> handledGroups = new ( StringComparer.OrdinalIgnoreCase );
 
-		foreach( var prop in props.OrderBy( x => x.SourceLine ).ThenBy( x => x.DisplayName ) )
+		foreach( var prop in props )
 		{
+			if ( !string.IsNullOrWhiteSpace( prop.GroupName ) )
+			{
+				if ( handledGroups.Contains( prop.GroupName ) )
+					continue;
+
+				handledGroups.Add( prop.GroupName );
+				AddGroup( ps, prop.GroupName, props.Where( x => x.GroupName == prop.GroupName ).ToArray() );
+				continue;
+			}
+
 			ps.AddRow( prop );
 		}
 		
 		Content.Add( ps );
 	}
+
+	private void AddGroup( ControlSheet sheet, string groupName, SerializedProperty[] props )
+	{
+		var lo = Layout.Column();
+		lo.Spacing = 2;
+		var ps = new ControlSheet();
+
+		SerializedProperty skipProperty = null;
+
+		var toggleGroup = props.FirstOrDefault( x => x.HasAttribute<ToggleGroupAttribute>() && x.Name == groupName );
+		if ( toggleGroup is not null )
+		{
+			skipProperty = toggleGroup;
+
+			var label = new Label( groupName );
+			label.SetStyles( "color: #ccc; font-weight: bold;" );
+			label.FixedHeight = ControlWidget.ControlRowHeight;
+
+			var toggle = ControlWidget.Create( toggleGroup );
+			toggle.FixedHeight = 18;
+			toggle.FixedWidth = 18;
+
+			var row = Layout.Row();
+			row.Spacing = 8;
+			row.Add( toggle );
+			row.Add( label, 1 );
+
+			lo.Add( row );
+		}
+		else
+		{
+			var label = new Label( groupName );
+			label.SetStyles( "color: #ccc; font-weight: bold;" );
+			label.FixedHeight = ControlWidget.ControlRowHeight;
+			lo.Add( label );
+		}
+
+		ps.Margin = 0;
+
+		foreach ( var prop in props )
+		{
+			if ( skipProperty == prop )
+				continue;
+
+			ps.AddRow( prop, 8 );
+		}
+
+		lo.Add( ps );
+		lo.Margin = new Sandbox.UI.Margin( 0, 0, 0, 0 );
+
+		sheet.AddLayout( lo );
+	}
+
 }
 
 file class ComponentHeader : Widget
@@ -112,7 +180,7 @@ file class ComponentHeader : Widget
 	SerializedObject TargetObject { get; init; }
 	ComponentSheet Sheet { get; set; }
 
-	public Action WantsContextMenu;
+	public Action<Vector2?> WantsContextMenu;
 
 	Layout expanderRect;
 	Layout iconRect;
@@ -157,6 +225,22 @@ file class ComponentHeader : Widget
 		moreRect.AddSpacingCell( 16 );
 
 		Layout.AddSpacingCell( 16 );
+
+		IsDraggable = true;
+	}
+
+	protected override void OnDragStart()
+	{
+		base.OnDragStart();
+
+		if ( !TargetObject.TryGetProperty( "GameObject", out var goProp ) ) return;
+
+		var go = goProp.GetValue<GameObject>( null );
+		if ( go == null ) return;
+
+		var drag = new Drag( Sheet );
+		drag.Data.Object = go;
+		drag.Execute();
 	}
 
 	protected override void OnPaint()
@@ -208,7 +292,7 @@ file class ComponentHeader : Widget
 	{
 		base.OnMouseRightClick( e );
 
-		WantsContextMenu?.Invoke();
+		WantsContextMenu?.Invoke( null );
 	}
 
 	protected override void OnMouseClick( MouseEvent e )
@@ -219,7 +303,7 @@ file class ComponentHeader : Widget
 		{
 			if ( moreRect.InnerRect.IsInside( e.LocalPosition ) )
 			{
-				WantsContextMenu?.Invoke();
+				WantsContextMenu?.Invoke( ToScreen( moreRect.OuterRect.BottomLeft ) );
 			}
 			else
 			{
