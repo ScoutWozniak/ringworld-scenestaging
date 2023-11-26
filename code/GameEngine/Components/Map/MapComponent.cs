@@ -57,6 +57,8 @@ public class MapComponent : BaseComponent, BaseComponent.ExecuteInEditor
 			var co = go.AddComponent<ColliderMapComponent>();
 			co.SetBody( body );
 			go.SetParent( GameObject, true );
+			go.Networked = true;
+			go.Network.Spawn();
 		}
 	}
 
