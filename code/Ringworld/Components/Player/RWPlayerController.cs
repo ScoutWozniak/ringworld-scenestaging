@@ -33,27 +33,6 @@ public class RWPlayerController : BaseComponent, INetworkSerializable
 
 			IsRunning = Input.Down( "Run" );
 
-			if (Input.Pressed("attack1"))
-			{
-				var eyepos = Transform.Position + Vector3.Up * 60;
-				Log.Info( eyepos + EyeAngles.ToRotation().Forward * 1000.0f );
-
-				var tr = Physics.Trace.Ray( eyepos, eyepos + EyeAngles.ToRotation().Forward * 1000.0f )
-					.WithoutTags( "physics" )
-					.Run();
-
-				
-				/*
-				if (tr.Hit)
-				{
-					if ( tr.Body.GameObject is GameObject go )
-					{
-						Log.Info("hit!");
-					}
-				}
-				*/
-				
-			}
 		}
 
 		var cc = GameObject.GetComponent<CharacterController>();
@@ -167,8 +146,9 @@ public class RWPlayerController : BaseComponent, INetworkSerializable
 
 		if ( !WishVelocity.IsNearZeroLength ) WishVelocity = WishVelocity.Normal;
 
-		if ( Input.Down( "Run" ) ) WishVelocity *= 320.0f;
-		else WishVelocity *= 110.0f;
+		// It says run but it's really walk
+		if ( Input.Down( "Run" ) ) WishVelocity *= 110.0f;
+		else WishVelocity *= 320.0f;
 	}
 
 	public void Write( ref ByteStream stream )

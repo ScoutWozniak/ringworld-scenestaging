@@ -76,7 +76,6 @@
     {
       "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
       "Name": "Camera",
-      "Position": "653.8376,863.2358,-573.3307",
       "Rotation": "0.1921523,0.3922019,-0.3957874,0.8078413",
       "Enabled": true,
       "Components": [
@@ -93,6 +92,10 @@
           "TargetEye": "None",
           "ZFar": 10000,
           "ZNear": 1
+        },
+        {
+          "__type": "SoundListenerComponent",
+          "__enabled": true
         }
       ]
     },
@@ -113,7 +116,7 @@
           "__enabled": true,
           "Acceleration": 10,
           "GroundAngle": 45,
-          "Height": 71.05,
+          "Height": 83.21,
           "IgnoreLayers": "player,carrying",
           "Radius": 11.65,
           "StepHeight": 18
@@ -1957,6 +1960,26 @@
                   "MyStringValue": "Hello World!"
                 }
               ]
+            },
+            {
+              "Id": "309ae1a5-b511-4e82-81e3-a736886e69b0",
+              "Name": "Object",
+              "Position": "0,0,0",
+              "Tags": "red,green",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "SkinnedModelRenderer",
+                  "__enabled": true,
+                  "BodyGroups": 18446744073709551615,
+                  "BoneMergeTarget": "cab3abd0-fc90-4e6e-a852-c0267fe63619",
+                  "CreateBoneObjects": true,
+                  "MaterialOverride": null,
+                  "Model": "models/testmagnum.vmdl",
+                  "ShouldCastShadows": true,
+                  "Tint": "1,1,1,1"
+                }
+              ]
             }
           ]
         },
@@ -1965,7 +1988,14 @@
           "Name": "Weapon",
           "Position": "0,0,0",
           "Tags": "red,green",
-          "Enabled": true
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "WeaponBase",
+              "__enabled": true,
+              "vModel": "cab3abd0-fc90-4e6e-a852-c0267fe63619"
+            }
+          ]
         }
       ]
     },
@@ -2114,6 +2144,20 @@
           "Radius": 34.000008,
           "Static": false,
           "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "9fa380cd-74e3-4a07-af9a-8565ba4b9fd6",
+      "Name": "Point Light",
+      "Position": "0,0,246.2085",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "PointLightComponent",
+          "__enabled": true,
+          "LightColor": "0.42079,0.86833,1,1",
+          "Radius": 1000
         }
       ]
     }
