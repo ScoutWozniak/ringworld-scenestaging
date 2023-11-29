@@ -12,6 +12,9 @@ public class PlayerController : BaseComponent, INetworkSerializable
 	[Property] public GameObject Eye { get; set; }
 	[Property] public CitizenAnimation AnimationHelper { get; set; }
 
+	[Property] public GameObject hideOnClient { get;set; }
+	[Property] public GameObject hideOnServer { get; set; }
+
 	public Angles EyeAngles;
 	public bool IsRunning;
 
@@ -27,16 +30,44 @@ public class PlayerController : BaseComponent, INetworkSerializable
 			var cam = Scene.GetComponent<CameraComponent>( true, true );
 
 			var lookDir = EyeAngles.ToRotation();
-			cam.Transform.Position = Transform.Position + lookDir.Backward * 300 + Vector3.Up * 75.0f;
+			//cam.Transform.Position = Transform.Position + lookDir.Backward * 300 + Vector3.Up * 75.0f;
+			cam.Transform.Position = Transform.Position + lookDir.Backward * 0 + Vector3.Up * 75.0f;
 			cam.Transform.Rotation = lookDir;
 
 			IsRunning = Input.Down( "Run" );
+
+			if (Input.Pressed("attack1"))
+			{
+				var eyepos = Transform.Position + Vector3.Up * 60;
+				var tr = Physics.Trace.Ray( eyepos, eyepos + EyeAngles.ToRotation().Forward * 1000.0f )
+					.WithoutTags( "physics" )
+					.Run();
+
+				if (tr.Hit)
+				{
+					if ( tr.Body.GameObject is GameObject go )
+					{
+						Log.Info("hit!");
+					}
+				}
+			}
 		}
 
 		var cc = GameObject.GetComponent<CharacterController>();
 		if ( cc is null ) return;
 
 		float rotateDifference = 0;
+
+		foreach (GameObject go in hideOnClient.GetAllObjects(false))
+		{
+			go.Enabled = IsProxy;
+		}
+
+		foreach ( GameObject go in hideOnServer.GetAllObjects( false ) )
+		{
+			go.Enabled = !IsProxy;
+		}
+
 
 		// rotate body to look angles
 		if ( Body is not null )

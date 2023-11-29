@@ -1,9 +1,12 @@
 using Sandbox;
+using System.Security.Cryptography;
 
 public sealed class GameNetworkManager : BaseComponent, BaseComponent.INetworkListener
 {
 	[Property] public GameObject PlayerPrefab { get; set; }
 	[Property] public GameObject SpawnPoint { get; set; }
+
+	[Property] public GameObject HudExample { get; set; }
 
 	public override void OnStart()
 	{
@@ -26,6 +29,7 @@ public sealed class GameNetworkManager : BaseComponent, BaseComponent.INetworkLi
 		{
 			nameTag.Name = channel.DisplayName;
 		}
+
 
 		player.Network.Spawn( channel );
 	}

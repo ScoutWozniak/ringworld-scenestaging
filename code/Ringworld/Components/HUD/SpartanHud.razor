@@ -1,0 +1,63 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+
+<style>
+	SpartanHud
+	{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	align-items: center;
+	font-weight: bold;
+	border-radius: 20px;
+	display: flex;
+	flex-direction: column;
+
+		.title {
+			font-size: 25px;
+			font-family: Poppins;
+			color: #fff;
+		}
+	}
+</style>
+
+<root>
+	@if (healthComp is not null)
+	{
+		<div class="title">Shields: @healthComp.curSp</div>
+		<div class="title">Health: @healthComp.curHp</div>
+	}
+	<div class="title">Test Line</div>
+</root>
+
+@code
+{
+
+	[Property] public string MyStringValue { get; set; }
+
+	[Property] public Health healthComp {get;set;}
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	//protected override int BuildHash() => System.HashCode.Combine( MyStringValue );
+	protected override int BuildHash() {
+
+		if (healthComp is not null)
+			return System.HashCode.Combine(MyStringValue, healthComp.curSp, healthComp.curHp);
+		return System.HashCode.Combine(MyStringValue);
+	}
+
+	public override void OnAwake()
+	{
+		base.OnEnabled();
+		if (healthComp == null)
+		{
+			Log.Info("wort wort wort");
+			healthComp = GameObject.Parent.Parent.GetComponent<Health>(false, true);
+		}
+	}
+}
