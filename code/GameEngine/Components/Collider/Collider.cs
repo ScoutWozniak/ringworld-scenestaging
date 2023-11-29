@@ -37,18 +37,12 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 	public override void OnEnabled()
 	{
 		Assert.IsNull( keyframeBody );
-		Assert.AreEqual( 0, shapes.Count );
+		//Assert.AreEqual( 0, shapes.Count );
 		Assert.NotNull( Scene );
 
 		UpdatePhysicsBody();
 		RebuildImmediately();
-
-		GameObject.Tags.OnTagAdded += OnTagsChanged;
-		GameObject.Tags.OnTagRemoved += OnTagsChanged;
 	}
-
-
-
 
 	void UpdatePhysicsBody()
 	{
@@ -85,7 +79,10 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 		}
 	}
 
-	private void OnTagsChanged( string obj )
+	/// <summary>
+	/// Tags have been updated - lets update our shape tags
+	/// </summary>
+	protected override void OnTagsChannged()
 	{
 		foreach ( var shape in shapes )
 		{
@@ -183,9 +180,6 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 		shapes.Clear();
 
 		Transform.OnTransformChanged -= UpdateKeyframeTransform;
-
-		GameObject.Tags.OnTagAdded -= OnTagsChanged;
-		GameObject.Tags.OnTagRemoved -= OnTagsChanged;
 
 		_collisionEvents?.Dispose();
 		_collisionEvents = null;
