@@ -2,7 +2,7 @@ using Sandbox;
 using System.Drawing;
 using System.Runtime;
 
-public class PlayerController : BaseComponent, INetworkSerializable
+public class RWPlayerController : BaseComponent, INetworkSerializable
 {
 	[Property] public Vector3 Gravity { get; set; } = new Vector3( 0, 0, 800 );
 
@@ -11,9 +11,6 @@ public class PlayerController : BaseComponent, INetworkSerializable
 	[Property] public GameObject Body { get; set; }
 	[Property] public GameObject Eye { get; set; }
 	[Property] public CitizenAnimation AnimationHelper { get; set; }
-
-	[Property] public GameObject hideOnClient { get;set; }
-	[Property] public GameObject hideOnServer { get; set; }
 
 	public Angles EyeAngles;
 	public bool IsRunning;
@@ -64,15 +61,6 @@ public class PlayerController : BaseComponent, INetworkSerializable
 
 		float rotateDifference = 0;
 
-		foreach (GameObject go in hideOnClient.GetAllObjects(false))
-		{
-			go.Enabled = IsProxy;
-		}
-
-		foreach ( GameObject go in hideOnServer.GetAllObjects( false ) )
-		{
-			go.Enabled = !IsProxy;
-		}
 
 
 		// rotate body to look angles
