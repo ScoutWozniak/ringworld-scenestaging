@@ -45,7 +45,7 @@ public sealed partial class SkinnedModelRenderer : ModelRenderer
 
 	public SceneModel SceneModel => (SceneModel) _sceneObject;
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		if ( Model is null )
 			return;
@@ -84,7 +84,7 @@ public sealed partial class SkinnedModelRenderer : ModelRenderer
 	}
 
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		Assert.True( _sceneObject == null );
 		Assert.NotNull( Scene );
@@ -114,7 +114,7 @@ public sealed partial class SkinnedModelRenderer : ModelRenderer
 	}
 
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		ClearBoneProxies();
 
@@ -124,7 +124,16 @@ public sealed partial class SkinnedModelRenderer : ModelRenderer
 
 	public void UpdateInThread()
 	{
-		AnimationUpdate();
+		// If we're parented of an animator we need to be updated in order
+		// so just bounce
+		if ( Components.GetInAncestors<SkinnedModelRenderer>() is not null )
+			return;
+
+		// Update in order
+		foreach ( var c in Components.GetAll<SkinnedModelRenderer>( FindMode.EnabledInSelfAndDescendants ) )
+		{
+			c.AnimationUpdate();
+		}
 	}
 
 	public void PostAnimationUpdate()
@@ -171,7 +180,7 @@ public sealed partial class SkinnedModelRenderer : ModelRenderer
 		}
 	}
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		if ( Scene.ThreadedAnimation )
 			return;

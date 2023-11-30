@@ -28,6 +28,7 @@ public class ModelRenderer : Renderer, BaseComponent.ExecuteInEditor, BaseCompon
 		set
 		{
 			if ( _model == value ) return;
+
 			_model = value;
 			UpdateObject();
 		}
@@ -93,7 +94,7 @@ public class ModelRenderer : Renderer, BaseComponent.ExecuteInEditor, BaseCompon
 
 	Color ITintable.Color { get => Tint; set => Tint = value; }
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		if ( Model is null )
 			return;
@@ -123,10 +124,11 @@ public class ModelRenderer : Renderer, BaseComponent.ExecuteInEditor, BaseCompon
 		_sceneObject.ColorTint = Tint;
 		_sceneObject.Flags.CastShadows = _castShadows;
 		_sceneObject.MeshGroupMask = _bodyGroupsMask;
+		_sceneObject.Model = Model;
 		_sceneObject.SetMaterialOverride( MaterialOverride );
 	}
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		Assert.True( _sceneObject == null );
 		Assert.NotNull( Scene );
@@ -139,7 +141,7 @@ public class ModelRenderer : Renderer, BaseComponent.ExecuteInEditor, BaseCompon
 		UpdateObject();
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		_sceneObject?.Delete();
 		_sceneObject = null;

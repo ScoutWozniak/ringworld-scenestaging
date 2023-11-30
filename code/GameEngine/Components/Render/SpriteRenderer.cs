@@ -18,7 +18,7 @@ public sealed class SpriteRenderer : Renderer, BaseComponent.ExecuteInEditor
 	[Property] public float FogStrength { get; set; } = 1.0f;
 
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 
 	}
@@ -28,13 +28,13 @@ public sealed class SpriteRenderer : Renderer, BaseComponent.ExecuteInEditor
 
 	}
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		_so = new SpriteSceneObject( Scene.SceneWorld );
 		_so.Transform = Transform.World;
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		_so?.Delete();
 		_so = null;

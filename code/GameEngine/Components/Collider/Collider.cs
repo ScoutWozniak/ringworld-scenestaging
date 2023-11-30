@@ -34,7 +34,7 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 	/// </summary>
 	protected abstract IEnumerable<PhysicsShape> CreatePhysicsShapes( PhysicsBody targetBody );
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		Assert.IsNull( keyframeBody );
 		//Assert.AreEqual( 0, shapes.Count );
@@ -51,7 +51,7 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 		// is there a rigid body?
 		if ( !Static )
 		{
-			var body = GameObject.GetComponentInParent<PhysicsComponent>( true, true );
+			var body = GameObject.Components.GetInAncestorsOrSelf<PhysicsComponent>();
 			if ( body is not null )
 			{
 				physicsBody = body.GetBody();
@@ -123,7 +123,7 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 		// try to get rigidbody
 		if ( physicsBody is null )
 		{
-			var body = GameObject.GetComponentInParent<PhysicsComponent>( true, true );
+			var body = GameObject.Components.GetInAncestorsOrSelf<PhysicsComponent>();
 			if ( body is null ) return;
 			physicsBody = body.GetBody();
 		}
@@ -147,7 +147,7 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 		_buildScale = Transform.Scale;
 	}
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		if ( shapesDirty )
 		{
@@ -170,7 +170,7 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 		}
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		foreach ( var shape in shapes )
 		{
