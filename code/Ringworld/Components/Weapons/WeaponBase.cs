@@ -8,14 +8,17 @@ public sealed class WeaponBase : BaseComponent
 	public GameObject Eye;
 	public Angles EyeAngles;
 
-	public override void OnEnabled() {
+	protected override void OnEnabled() {
 		base.OnEnabled();
-		Eye = GameObject.Parent.GetComponent<RWPlayerController>().Eye;
+		Eye = GameObject.Parent.Components.Get<RWPlayerController>( FindMode.EverythingInSelfAndDescendants ).Eye;
 		Log.Info( Eye );
 	}
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
+		if ( IsProxy )
+			return;
+
 		if ( Input.Pressed( "attack1" ) )
 		{
 			var eyepos = Transform.Position + Vector3.Up * 60;

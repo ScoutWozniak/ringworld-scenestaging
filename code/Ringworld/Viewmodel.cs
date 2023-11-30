@@ -3,10 +3,11 @@ using Sandbox;
 public sealed class Viewmodel : BaseComponent
 {
 	[Property] GameObject eye { get; set; }
-	public override void Update()
+	protected override void OnUpdate()
 	{
-		var cam = Scene.GetComponent<CameraComponent>( true, true );
+		var cam = Scene.Components.Get<CameraComponent>( FindMode.EverythingInSelfAndDescendants );
 		GameObject.Transform.Position = cam.Transform.Position;
 		GameObject.Transform.Rotation = cam.Transform.Rotation;
+		
 	}
 }

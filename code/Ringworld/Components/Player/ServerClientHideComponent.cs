@@ -5,12 +5,8 @@ public sealed class ServerClientHideComponent : BaseComponent
 	[Property] public GameObject hideOnClient { get; set; }
 	[Property] public GameObject hideOnServer { get; set; }
 
-	public override void Update()
-	{
 
-	}
-
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		base.OnEnabled();
 		foreach ( GameObject go in hideOnClient.GetAllObjects( false ) )

@@ -1975,7 +1975,7 @@
                   "BoneMergeTarget": "cab3abd0-fc90-4e6e-a852-c0267fe63619",
                   "CreateBoneObjects": true,
                   "MaterialOverride": null,
-                  "Model": "models/testmagnum.vmdl",
+                  "Model": "models/dev/error.vmdl",
                   "ShouldCastShadows": true,
                   "Tint": "1,1,1,1"
                 }

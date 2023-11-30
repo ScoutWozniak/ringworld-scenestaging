@@ -51,13 +51,13 @@
 		return System.HashCode.Combine(MyStringValue);
 	}
 
-	public override void OnAwake()
+	protected override void OnAwake()
 	{
 		base.OnEnabled();
 		if (healthComp == null)
 		{
 			Log.Info("wort wort wort");
-			healthComp = GameObject.Parent.Parent.GetComponent<Health>(false, true);
+			healthComp = GameObject.Parent.Parent.Components.Get<Health>(FindMode.Disabled);
 		}
 	}
 }

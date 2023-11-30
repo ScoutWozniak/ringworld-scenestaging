@@ -8,7 +8,7 @@ public sealed class Health : BaseComponent, INetworkSerializable
 	public int curSp;
 	public int curHp;
 
-	public override void OnAwake()
+	protected override void OnAwake()
 	{
 		base.OnAwake();
 		curSp = maxShieldPoints;
