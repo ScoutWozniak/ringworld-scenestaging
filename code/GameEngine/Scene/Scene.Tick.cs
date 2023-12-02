@@ -62,7 +62,7 @@ public partial class Scene : GameObject
 		if ( IsEditor )
 		{
 			Update();
-			Signal( SceneHook.Stage.UpdateBones );
+			Signal( GameObjectSystem.Stage.UpdateBones );
 		}
 
 		ProcessDeletes();
@@ -70,10 +70,13 @@ public partial class Scene : GameObject
 
 	public void GameTick()
 	{
-		gizmoInstance.Input.Camera = Sandbox.Camera.Main;
+		if ( Sandbox.Camera.Main is not null )
+		{
+			gizmoInstance.Input.Camera = Sandbox.Camera.Main;
 
-		// default sound listener, it might get overriden anyway
-		Sound.Listener = new ( Sandbox.Camera.Main.Position, Sandbox.Camera.Main.Rotation );
+			// default sound listener, it might get overriden anyway
+			Sound.Listener = new( Sandbox.Camera.Main.Position, Sandbox.Camera.Main.Rotation );
+		}
 
 		TimeDelta = Time.Delta * TimeScale;
 		TimeNow += TimeDelta;
@@ -105,7 +108,7 @@ public partial class Scene : GameObject
 			SceneNetworkUpdate();
 
 			Update();
-			Signal( SceneHook.Stage.UpdateBones );
+			Signal( GameObjectSystem.Stage.UpdateBones );
 
 			ProcessDeletes();
 		}
@@ -118,7 +121,7 @@ public partial class Scene : GameObject
 
 		using ( Sandbox.Utility.Superluminal.Scope( "Scene.FixedUpdate", Color.Cyan ) )
 		{
-			Signal( SceneHook.Stage.PhysicsStep );
+			Signal( GameObjectSystem.Stage.PhysicsStep );
 
 
 
