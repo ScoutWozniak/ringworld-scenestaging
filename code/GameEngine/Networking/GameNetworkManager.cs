@@ -11,7 +11,7 @@ public sealed class GameNetworkManager : BaseComponent, BaseComponent.INetworkLi
 	}
 
 	protected override void OnUpdate()
-	{
+	{ 
 		
 	}
 
@@ -26,7 +26,12 @@ public sealed class GameNetworkManager : BaseComponent, BaseComponent.INetworkLi
 		{
 			nameTag.Name = channel.DisplayName;
 		}
-
 		player.Network.Spawn( channel );
+	}
+
+	[Event("ringworld.playerdeath")]
+	public void OnPlayerDeath()
+	{
+		Log.Info( "player died" );
 	}
 }

@@ -45,7 +45,6 @@ public class RWPlayerController : BaseComponent, INetworkSerializable
 		float rotateDifference = 0;
 
 
-
 		// rotate body to look angles
 		if ( Body is not null )
 		{

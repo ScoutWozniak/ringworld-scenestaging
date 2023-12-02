@@ -12,8 +12,6 @@ public class PlayerController : BaseComponent, INetworkSerializable
 	[Property] public GameObject Eye { get; set; }
 	[Property] public CitizenAnimation AnimationHelper { get; set; }
 
-	[Property] public GameObject hideOnClient { get;set; }
-	[Property] public GameObject hideOnServer { get; set; }
 
 	public Angles EyeAngles;
 	public bool IsRunning;
@@ -63,16 +61,6 @@ public class PlayerController : BaseComponent, INetworkSerializable
 		if ( cc is null ) return;
 
 		float rotateDifference = 0;
-
-		foreach (GameObject go in hideOnClient.GetAllObjects(false))
-		{
-			go.Enabled = IsProxy;
-		}
-
-		foreach ( GameObject go in hideOnServer.GetAllObjects( false ) )
-		{
-			go.Enabled = !IsProxy;
-		}
 
 
 		// rotate body to look angles

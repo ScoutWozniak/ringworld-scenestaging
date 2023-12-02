@@ -26,4 +26,11 @@ public sealed class Health : BaseComponent, INetworkSerializable
 		curSp = stream.Read<int>();
 		curHp = stream.Read<int>();
 	}
+
+	[Broadcast]
+	public void Hurt(int damage)
+	{
+		curHp -= damage;
+		Event.Run( "ringworld.playerdeath" );
+	}
 }
