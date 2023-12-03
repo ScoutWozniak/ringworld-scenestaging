@@ -33,7 +33,7 @@ public sealed class ServerClientHideComponent : BaseComponent
 
 		if (!IsProxy)
 		{
-			tempCollider.Tags.Add( "localplayer" );
+			//tempCollider.Tags.Add( "localplayer" );
 		}
 		
 	}

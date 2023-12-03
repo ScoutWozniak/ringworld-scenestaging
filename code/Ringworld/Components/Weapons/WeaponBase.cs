@@ -15,8 +15,15 @@ public sealed class WeaponBase : BaseComponent
 
 	protected override void OnEnabled() {
 		base.OnEnabled();
-		owner = GameObject.Parent.Components.Get<RWPlayerController>( FindMode.EverythingInSelfAndDescendants );
+		owner = GameObject.Parent.Components.Get<RWPlayerController>( FindMode.EverythingInSelfAndAncestors);
+		Log.Info( owner );
+	}
 
+	protected override void OnAwake()
+	{
+		base.OnStart();
+		owner = GameObject.Parent.Components.Get<RWPlayerController>( FindMode.EverythingInSelfAndDescendants );
+		Log.Info( owner );
 	}
 
 	public IEnumerable<PhysicsTraceResult> TraceBullet()
@@ -58,7 +65,15 @@ public sealed class WeaponBase : BaseComponent
 						Log.Info( test.curHp );
 						test.Hurt( damage );
 					}
+
+					var test2 = go.Components.Get<TargetTestComponent>();
+					if (test2 is not null)
+					{
+						test2.OnHit();
+					}
 				}
+
+
 			}
 
 			if ( vModel is not null )
@@ -66,7 +81,7 @@ public sealed class WeaponBase : BaseComponent
 				vModel.Set( "b_attack", true );
 			}
 
-			FireEffects();
+			//FireEffects();
 
 		}
 	}

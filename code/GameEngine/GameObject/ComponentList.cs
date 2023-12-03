@@ -137,10 +137,10 @@ public class ComponentList
 		return GetAll( type, find ).FirstOrDefault();
 	}
 
-	/// <summary>
-	/// Get all components of this type
-	/// </summary>
-	public IEnumerable<BaseComponent> GetAll( Type type, FindMode find )
+/// <summary>
+/// Get all components of this type
+/// </summary>
+public IEnumerable<BaseComponent> GetAll( Type type, FindMode find )
 	{
 		return GetAll<BaseComponent>( find ).Where( x => x.GetType().IsAssignableTo( type ) );
 	}
