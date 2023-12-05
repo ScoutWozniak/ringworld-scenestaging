@@ -15,6 +15,12 @@ public class RWPlayerController : BaseComponent, INetworkSerializable
 	public Angles EyeAngles;
 	public bool IsRunning;
 
+	protected override void OnEnabled()
+	{
+		base.OnEnabled();
+		if (!IsProxy)
+			Scene.Components.Get<Chat>( FindMode.EverythingInDescendants ).AddClientText( "Welcome!" );
+	}
 
 	protected override void OnUpdate()
 	{

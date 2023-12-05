@@ -26,20 +26,18 @@ public sealed class WeaponBase : BaseComponent
 		Log.Info( owner );
 	}
 
-	public IEnumerable<PhysicsTraceResult> TraceBullet()
+	public SceneTraceResult TraceBullet()
 	{
 		var eyepos = owner.Transform.Position + (Vector3.Up * 75.0f);
 		EyeAngles = owner.EyeAngles.ToRotation();
 
-		var tr = Physics.Trace.Ray( eyepos, eyepos + EyeAngles.Forward * 1000.0f )
+		var tr = Scene.Trace.Ray( eyepos, eyepos + EyeAngles.Forward * 1000.0f )
 				.WithoutTags( "physics", "localplayer" )
+				.UseHitboxes( true )
 				.Run();
 
-		if ( tr.Hit )
-		{
-			yield return tr;
-		}
 
+			return tr;
 	}
 
 	protected override void OnUpdate()
@@ -50,30 +48,30 @@ public sealed class WeaponBase : BaseComponent
 
 		if ( Input.Pressed( "attack1" ) )
 		{
-			Log.Info( TraceBullet().Count() );
-			foreach ( var tr in TraceBullet() )
-			{
+			var tr = TraceBullet();
+			
+			Log.Info( tr.Body.GameObject );
 				
-				Log.Info( tr.Body.GameObject );
-				if ( tr.Body.GameObject is GameObject go ) 
+			if (tr.Hitbox is not null)
+			{
+				Log.Info( tr.Hitbox.Bone );
+			}
+			if ( tr.Body.GameObject is GameObject go ) 
+			{
+				var test = go.Components.Get<Health>( FindMode.InAncestors );
+				if ( test is not null && test.GameObject.IsProxy )
 				{
-					var test = go.Components.Get<Health>( FindMode.InAncestors );
-					if ( test is not null && test.GameObject.IsProxy )
-					{
-						Log.Info( $"Found a player at {test.GameObject}" );
-						test.curHp -= 1;
-						Log.Info( test.curHp );
-						test.Hurt( damage );
-					}
-
-					var test2 = go.Components.Get<TargetTestComponent>();
-					if (test2 is not null)
-					{
-						test2.OnHit();
-					}
+					Log.Info( $"Found a player at {test.GameObject}" );
+					test.curHp -= 1;
+					Log.Info( test.curHp );
+					test.Hurt( damage );
 				}
 
-
+				var test2 = go.Components.Get<TargetTestComponent>();
+				if (test2 is not null)
+				{
+					test2.OnHit();
+				}
 			}
 
 			if ( vModel is not null )

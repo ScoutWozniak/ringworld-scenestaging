@@ -81,6 +81,19 @@
 		StateHasChanged();
 	}
 
+	public void AddClientText( string message)
+	{
+		message = message.Truncate(300);
+
+		if (string.IsNullOrWhiteSpace(message))
+			return;
+
+		Log.Info($"{message}");
+
+		Entries.Add(new Entry("", message, 0.0f));
+		StateHasChanged();
+	}
+
 	void BaseComponent.INetworkListener.OnConnected( Connection channel )
 	{
 		if ( IsProxy ) return;

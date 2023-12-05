@@ -13,7 +13,7 @@ public sealed class AnimationPropertyComponent : BaseComponent
 	[Property] string componentName { get; set; }
 
 	[Property] AnimTypes type { get; set; }
-	enum AnimTypes
+	enum AnimTypes 
 	{
 		Property,
 		Method
