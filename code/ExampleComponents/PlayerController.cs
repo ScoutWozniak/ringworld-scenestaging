@@ -16,6 +16,21 @@ public class PlayerController : BaseComponent, INetworkSerializable
 	public Angles EyeAngles;
 	public bool IsRunning;
 
+	protected override void OnEnabled()
+	{
+		base.OnEnabled();
+
+		if ( IsProxy )
+			return;
+
+		var cam = Scene.GetAllComponents<CameraComponent>().FirstOrDefault();
+		if ( cam is not null )
+		{
+			EyeAngles = cam.Transform.Rotation.Angles();
+			EyeAngles.roll = 0;
+		}
+	}
+
 	protected override void OnUpdate()
 	{
 		// Eye input
@@ -87,6 +102,7 @@ public class PlayerController : BaseComponent, INetworkSerializable
 		if ( AnimationHelper is not null )
 		{
 			AnimationHelper.WithVelocity( cc.Velocity );
+			AnimationHelper.WithWishVelocity( WishVelocity );
 			AnimationHelper.IsGrounded = cc.IsOnGround;
 			AnimationHelper.FootShuffle = rotateDifference;
 			AnimationHelper.WithLook( EyeAngles.Forward, 1, 1, 1.0f );
