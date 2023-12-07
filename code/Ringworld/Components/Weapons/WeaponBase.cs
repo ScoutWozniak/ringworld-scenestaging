@@ -62,7 +62,6 @@ public sealed class WeaponBase : BaseComponent
 				if ( test is not null && test.GameObject.IsProxy )
 				{
 					Log.Info( $"Found a player at {test.GameObject}" );
-					test.curHp -= 1;
 					Log.Info( test.curHp );
 					test.Hurt( damage );
 				}

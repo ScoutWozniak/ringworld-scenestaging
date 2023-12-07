@@ -20,6 +20,9 @@ public class RWPlayerController : BaseComponent, INetworkSerializable
 		base.OnEnabled();
 		if (!IsProxy)
 			Scene.Components.Get<Chat>( FindMode.EverythingInDescendants ).AddClientText( "Welcome!" );
+
+		AnimationHelper.HoldType = CitizenAnimation.HoldTypes.Pistol;
+		AnimationHelper.IsWeaponLowered = false;
 	}
 
 	protected override void OnUpdate()
