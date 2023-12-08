@@ -4,7 +4,7 @@ using Sandbox.Services;
 using System;
 using System.Threading;
 
-public sealed class DropObjectOnFootstep : BaseComponent
+public sealed class DropObjectOnFootstep : Component
 {
 	[Property] GameObject Prefab { get; set; }
 	[Property] SkinnedModelRenderer Source { get; set; }
@@ -19,6 +19,9 @@ public sealed class DropObjectOnFootstep : BaseComponent
 
 	protected override void OnDisabled()
 	{
+		if ( Source is null )
+			return;
+
 		Source.OnFootstepEvent -= OnEvent;
 	}
 
