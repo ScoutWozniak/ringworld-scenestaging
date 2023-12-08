@@ -1,6 +1,6 @@
 using Sandbox;
 
-public sealed class FPSCam : BaseComponent
+public sealed class FPSCam : Component
 {
 	protected override void OnUpdate()
 	{

@@ -1,6 +1,6 @@
 using Sandbox;
 
-public sealed class Health : BaseComponent, INetworkSerializable
+public sealed class Health : Component, INetworkSerializable
 {
 	[Property] public int maxShieldPoints { get; set; } = 70;
 	[Property] public int maxHealthPoints { get; set; } = 45;

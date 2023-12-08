@@ -1,0 +1,89 @@
+{
+  "GameObjects": [
+    {
+      "Id": "4267fff8-c6cb-47dc-8799-53812ddb5fc0",
+      "Name": "Directional Light",
+      "Position": "0,0,45.06857",
+      "Rotation": "-0.2940267,0.4649465,0.1670815,0.8182034",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "DirectionalLight",
+          "__enabled": true,
+          "LightColor": "1,1,1,1",
+          "Shadows": true,
+          "SkyColor": "0.03392,0.03562,0.0396,1"
+        }
+      ]
+    },
+    {
+      "Id": "e3e73b7d-3910-4cea-85fc-c256d93fdc52",
+      "Name": "Floor",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "SkinnedModelRenderer",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "BoneMergeTarget": null,
+          "CreateBoneObjects": false,
+          "MaterialOverride": null,
+          "Model": "models/dev/plane.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "7cfa6ea1-d781-466c-90dd-c274c968fc2c",
+      "Name": "Cam",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "CameraComponent",
+          "__enabled": true,
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 60,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "ZFar": 10000,
+          "ZNear": 10
+        }
+      ]
+    },
+    {
+      "Id": "da471d75-5eba-4598-b6da-dc2fc8791654",
+      "Name": "Cam (1)",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "SkinnedModelRenderer",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "BoneMergeTarget": null,
+          "CreateBoneObjects": false,
+          "MaterialOverride": null,
+          "Model": "models/citizen/citizen.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "NetworkFrequency": 60,
+    "Lerping": true,
+    "UseFixedUpdate": true,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "MaxFixedUpdates": 5,
+    "FixedUpdateFrequency": 50
+  },
+  "Title": "untitled",
+  "Description": "",
+  "__references": []
+}

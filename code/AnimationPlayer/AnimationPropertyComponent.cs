@@ -2,11 +2,11 @@ using Sandbox;
 using System.ComponentModel;
 using System.Reflection;
 
-public sealed class AnimationPropertyComponent : BaseComponent
+public sealed class AnimationPropertyComponent : Sandbox.Component
 {
 	[Property] public GameObject animated { get; set; }
 
-	[Property] BaseComponent component { get; set; }
+	[Property] Sandbox.Component component { get; set; }
 
 	[Property] CitizenAnimation animation { get; set; }
 

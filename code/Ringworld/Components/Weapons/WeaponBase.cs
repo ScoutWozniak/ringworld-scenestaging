@@ -1,7 +1,7 @@
 using Sandbox;
 using System.Diagnostics;
 
-public sealed class WeaponBase : BaseComponent
+public sealed class WeaponBase : Component
 {
 	// In future we should create the viewmodel from a prefab, this is just temporary
 	[Property] SkinnedModelRenderer vModel { get; set; }
@@ -86,7 +86,7 @@ public sealed class WeaponBase : BaseComponent
 	[Broadcast]
 	void FireEffects() 
 	{
-		Sound.FromWorld( "pistolfire", vModel.GameObject.Transform.Position );
+		Sound.Play( "pistolfire", vModel.GameObject.Transform.Position );
 		Components.Get<SoundPointComponent>().StartSound();
 	}
 }

@@ -1,6 +1,6 @@
 using Sandbox;
 
-public sealed class TargetTestComponent : BaseComponent
+public sealed class TargetTestComponent : Component
 {
 	[Property] AnimationTransformComponent testAnimPlayer { get; set; }
 

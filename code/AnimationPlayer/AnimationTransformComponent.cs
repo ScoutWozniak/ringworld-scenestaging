@@ -1,6 +1,6 @@
 using Sandbox;
 
-public sealed class AnimationTransformComponent : BaseComponent
+public sealed class AnimationTransformComponent : Component
 {
 	[Property] GameObject animated { get; set; }
 

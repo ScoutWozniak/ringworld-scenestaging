@@ -1,6 +1,6 @@
 using Sandbox;
 
-public sealed class ServerClientHideComponent : BaseComponent
+public sealed class ServerClientHideComponent : Component
 {
 	[Property] public bool disable { get; set; }
 	[Property] public GameObject hideOnClient { get; set; }
